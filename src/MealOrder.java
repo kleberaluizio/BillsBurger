@@ -36,7 +36,7 @@ public class MealOrder {
             //Adding Hamburger
             addToList(Hamburger.BurgerType.BigMac.toString(), Hamburger.BurgerType.BigMac.getPrice());
             //Adding Drink
-            addToList(Drink.DrinkType.Coke.toString(), Drink.getValue(Drink.DrinkType.Coke.toString(), Drink.DrinkSize.Small.toString()));
+            addToList(Drink.DrinkType.COKE.toString(), Drink.getPrice(Drink.DrinkType.COKE.toString(), Size.SMALL.name()));
             //Adding Side
             addToList(SideItems.SideItem.Fries.toString(), SideItems.SideItem.Fries.getPrice());
 
@@ -46,7 +46,7 @@ public class MealOrder {
             //Adding Hamburger
             addToList(Hamburger.BurgerType.QuarterPounder.toString(), Hamburger.BurgerType.QuarterPounder.getPrice());
             //Adding Drink
-            addToList(Drink.DrinkType.Coke.toString(), Drink.getValue(Drink.DrinkType.Coke.toString(), Drink.DrinkSize.Large.toString()));
+            addToList(Drink.DrinkType.COKE.toString(), Drink.getPrice(Drink.DrinkType.COKE.toString(), Size.LARGE.name()));
             //Adding Side
             addToList(SideItems.SideItem.Fries.toString(), SideItems.SideItem.Fries.getPrice());
 
@@ -103,8 +103,8 @@ public class MealOrder {
             String drinkTypeChoice = JOptionPane.showInputDialog(null, "Choose an option:", "Drink's Menu",
                     JOptionPane.PLAIN_MESSAGE, null, drinkTypeOption, drinkTypeOption[0]).toString();
 
-            if (drinkTypeChoice.contains("Water")) {
-                double drinkPrice = Drink.getValue();
+            if (drinkTypeChoice.equalsIgnoreCase("Water")) {
+                double drinkPrice = Drink.getPrice(drinkTypeChoice, "");
                 addToList(drinkTypeChoice , drinkPrice);
 
             } else {
@@ -122,7 +122,7 @@ public class MealOrder {
     }
 
     public String getDrinkSize(String drinkTypeChoice){
-        Object[] drinkSizeOption = Drink.DrinkSize.values();
+        Object[] drinkSizeOption = Size.values();
         String drinkSizeChoice = JOptionPane.showInputDialog(null, "Choose an option:", "Drink's Size",
                 JOptionPane.PLAIN_MESSAGE, null, drinkSizeOption, drinkSizeOption[0]).toString();
 
@@ -130,7 +130,7 @@ public class MealOrder {
         return  drinkSizeChoice;
     }
     private double getDrinkPrice(String drinkTypeChoice, String drinkSizeChoice){
-        double drinkPrice = Drink.getValue(drinkTypeChoice, drinkSizeChoice);
+        double drinkPrice = Drink.getPrice(drinkTypeChoice, drinkSizeChoice);
         return drinkPrice;
     }
 
@@ -153,11 +153,13 @@ public class MealOrder {
         StringBuilder message = new StringBuilder();
         for (int i = 0; i < items.size(); i++) {
             amount = amount + prices.get(i);
-            String price = String.format("%.2f",prices.get(i));
-            message.append(items.get(i).indent(1)).append(" = ").append(price).append("\n");
+            String itemAndPrice = String.format("%2s: $  %.2f%n",items.get(i), prices.get(i));
+
+            message.append(itemAndPrice);
+            //message.append(items.get(i).indent(1)).append(" = ").append(price).append("\n");
         }
         message.append("\n");
-        message.append("Total amount = ").append(String.format("%.2f",amount)).append("\n");
+        message.append("Total amount: ").append(String.format("$ %.2f",amount)).append("\n");
         JOptionPane.showMessageDialog(null, message.toString(), " Meal Order ", JOptionPane.PLAIN_MESSAGE);
 
 
